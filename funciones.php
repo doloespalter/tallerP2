@@ -19,6 +19,23 @@ function guardarFamilia($nombre) {
     $cn->desconectar();
 }
 
+function eliminarFamilia($id) {
+    $cn = getConexion();
+    $sql = "DELETE FROM familias WHERE id=:id;";
+    $params = array(
+                array('id', $id, 'string')
+              );
+    
+    if($cn->consulta($sql, $params)){
+        $respuesta["result"] = "OK";
+        echo json_encode($respuesta);
+    }else{
+        echo json_encode(array("result"=>$cn->ultimoError())); 
+    }
+    $cn->desconectar();
+}
+
+
 function guardarArticulo($nombre, $famId, $destacado, $precio, $provId){
     $cn = getConexion();
     $cn->consulta("INSERT INTO articulos(nombre, id_familia, id_proveedor, precio, destacado) VALUES(:nombre, :famId,  :provId, :precio, :destacado)",
@@ -70,6 +87,64 @@ function getArticulos() {
     $cn->desconectar();
     
     return $articulos;
+}
+
+function obtenerProductosPorCant($catId, $pagina = 1, $cantidad) {
+     
+    $desde = ($pagina - 1) * $cantidad;
+    
+    $cn = getConexion();
+    $cn->consulta("
+        SELECT count(*) as total 
+        FROM productos");
+    
+    $total = $cn->siguienteRegistro()['total'] / $porPagina;
+    
+    $cn->consulta("
+            SELECT * FROM productos 
+            WHERE id_categoria = :catId 
+            LIMIT :desde, :cantidad
+            ",
+            array(
+                array('catId', $catId, 'int'),
+                array('desde', $desde, 'int'),
+                array('cantidad', $porPagina, 'int'),
+            ));
+    $productos = $cn->restantesRegistros();
+    $cn->desconectar();
+    
+    return array(
+        'total' => $total,
+        'objetos' => $productos
+    );
+}
+
+function obtenerFamiliasDeA10($pagina = 1) {
+    $cantidad=10;
+    $desde = ($pagina - 1) * $cantidad;
+    
+    $cn = getConexion();
+    $cn->consulta("
+        SELECT count(*) as total 
+        FROM familias");
+    
+    $total = $cn->siguienteRegistro()['total'] / $porPagina;
+    
+    $cn->consulta("
+            SELECT * FROM familias 
+            LIMIT :desde, :cantidad
+            ",
+            array(              
+                array('desde', $desde, 'int'),
+                array('cantidad', $cantidad, 'int'),
+            ));
+    $familias = $cn->restantesRegistros();
+    $cn->desconectar();
+    
+    return array(
+        'total' => $total,
+        'objetos' => $familias
+    );
 }
 
 
