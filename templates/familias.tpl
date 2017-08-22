@@ -11,8 +11,6 @@
         {include file="header.tpl"}
         {include file="adminMenu.tpl"}
         
-        <img id="eliminar2" src="./imagenes/trash-can.png"/>  
-        
         Familias de Productos
         
         <input type="submit" value="Agregar Nuevo" onClick="document.location.href='./nuevaFamilia.php'">
@@ -27,7 +25,7 @@
                 </thead>
                 <tbody class="table-hover">   
                     {foreach from=$familias item=familia}                                      
-                            <tr class="row.{$familia.id}">                
+                            <tr id="row_familia{$familia.id}">                
                                 <td class="text-center">{$familia.nombre}</td>   
                                 <td class="text-center" >
                                     <img class="eliminar" data="{$familia.id}" src="./imagenes/trash-can.png"/>                                      

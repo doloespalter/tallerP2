@@ -3,13 +3,13 @@ var id=0;
 
 $(document).ready(
     function () {
-        cargarFamilias();
+        cargarProveedores();
 
         $(".eliminar").click(               
             function () {
                 id = $(this).attr("data");
                 $.ajax({
-                    url: "borrarFamilia.php",
+                    url: "borrarProveedor.php",
                     dataType: "JSON",
                     type: "POST",
                     data: "id=" + id,
@@ -22,7 +22,7 @@ $(document).ready(
 
 
 function error(){
-    alert("Lo sentimos, no se ha podido eliminar la familia");
+    alert("Lo sentimos, no se ha podido eliminar el proveedor");
 }
 
 function procesar(respuesta){
@@ -36,15 +36,15 @@ function procesar(respuesta){
 }
 
 function actualizarTabla(){
-    var fila =  $('#row_familia'+id);
+    var fila =  $('#row_proveedor'+id);
     fila.remove();
 };
 
 
-function cargarFamilias() {
+function cargarProveedores() {
    
     $.ajax({
-        url: 'familias.php',
+        url: 'proveedores.php',
         dataType: 'html',
         data: {pag: pagina }
     }).done(function (html) {
@@ -52,22 +52,22 @@ function cargarFamilias() {
 
         $("#anterior").click(function () {
             pagina = pagina - 1;
-            cargarFamilias(pagina);
+            cargarProveedores(pagina);
         });
 
         $("#siguiente").click(function () {
             pagina = pagina + 1;
-            cargarFamilias(pagina);
+            cargarProveedores(pagina);
         });
         
         $("#primero").click(function () {
             pagina = 1;
-            cargarFamilias(pagina);
+            cargarProveedores(pagina);
         });
         
          $("#ultimo").click(function () {
             pagina = $("#total").val();
-            cargarFamilias(pagina);
+            cargarProveedores(pagina);
         });
 
     }).fail(function () {

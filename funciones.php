@@ -19,6 +19,22 @@ function guardarFamilia($nombre) {
     $cn->desconectar();
 }
 
+function eliminarArticulo($id) {
+    $cn = getConexion();
+    $sql = "DELETE FROM articulos WHERE id=:id;";
+    $params = array(
+                array('id', $id, 'string')
+              );
+    
+    if($cn->consulta($sql, $params)){
+        $respuesta["result"] = "OK";
+        echo json_encode($respuesta);
+    }else{
+        echo json_encode(array("result"=>$cn->ultimoError())); 
+    }
+    $cn->desconectar();
+}
+
 function eliminarFamilia($id) {
     $cn = getConexion();
     $sql = "DELETE FROM familias WHERE id=:id;";
@@ -35,13 +51,46 @@ function eliminarFamilia($id) {
     $cn->desconectar();
 }
 
+function eliminarProveedor($id) {
+    $cn = getConexion();
+    $sql = "DELETE FROM proveedores WHERE id=:id;";
+    $params = array(
+                array('id', $id, 'string')
+              );
+    
+    if($cn->consulta($sql, $params)){
+        $respuesta["result"] = "OK";
+        echo json_encode($respuesta);
+    }else{
+        echo json_encode(array("result"=>$cn->ultimoError())); 
+    }
+    $cn->desconectar();
+}
+
+
+
+function editarArticulo($id, $nombre, $famId, $destacado, $precio, $provId){
+    $cn = getConexion();
+    $sql = "UPDATE articulos SET nombre = :nombre, id_familia = :famId, id_proveedor = :provId, precio = :precio, destacado = :destacado WHERE id = :id";
+
+    $cn->consulta($sql,
+            array(
+                array('nombre', $nombre, 'string'),
+                array('destacado', $destacado, 'int'),
+                array('famId', $famId, 'int'),
+                array('precio', $precio, 'int'),
+                array('provId', $provId, 'int'),
+                array('id', $id, 'int')              
+            ));
+    $cn->desconectar();
+}
 
 function guardarArticulo($nombre, $famId, $destacado, $precio, $provId){
     $cn = getConexion();
     $cn->consulta("INSERT INTO articulos(nombre, id_familia, id_proveedor, precio, destacado) VALUES(:nombre, :famId,  :provId, :precio, :destacado)",
             array(
                 array('nombre', $nombre, 'string'),
-                array('destacado', $destacado, 'boolean'),
+                array('destacado', $destacado, 'int'),
                 array('famId', $famId, 'int'),
                 array('precio', $precio, 'int'),
                 array('provId', $provId, 'int')        
@@ -87,6 +136,18 @@ function getArticulos() {
     $cn->desconectar();
     
     return $articulos;
+}
+
+function getArticuloById($id) {
+    $cn = getConexion();
+    $cn->consulta("SELECT * FROM articulos WHERE id = :id",
+            array(
+                array('id', $id, 'int')
+            ));
+    $articulo = $cn->siguienteRegistro();
+    $cn->desconectar();
+    
+    return $articulo;
 }
 
 function obtenerProductosPorCant($catId, $pagina = 1, $cantidad) {
@@ -147,6 +208,61 @@ function obtenerFamiliasDeA10($pagina = 1) {
     );
 }
 
+function obtenerProveedoresDeA10($pagina = 1) {
+    $cantidad=10;
+    $desde = ($pagina - 1) * $cantidad;
+    
+    $cn = getConexion();
+    $cn->consulta("
+        SELECT count(*) as total 
+        FROM proveedores");
+    
+    $total = $cn->siguienteRegistro()['total'] / $porPagina;
+    
+    $cn->consulta("
+            SELECT * FROM proveedores 
+            LIMIT :desde, :cantidad
+            ",
+            array(              
+                array('desde', $desde, 'int'),
+                array('cantidad', $cantidad, 'int'),
+            ));
+    $proveedores = $cn->restantesRegistros();
+    $cn->desconectar();
+    
+    return array(
+        'total' => $total,
+        'objetos' => $proveedores
+    );
+}
+
+function obtenerArticulosDeA10($pagina = 1) {
+    $cantidad=10;
+    $desde = ($pagina - 1) * $cantidad;
+    
+    $cn = getConexion();
+    $cn->consulta("
+        SELECT count(*) as total 
+        FROM articulos");
+    
+    $total = $cn->siguienteRegistro()['total'] / $porPagina;
+    
+    $cn->consulta("
+            SELECT * FROM articulos 
+            LIMIT :desde, :cantidad
+            ",
+            array(              
+                array('desde', $desde, 'int'),
+                array('cantidad', $cantidad, 'int'),
+            ));
+    $articulos = $cn->restantesRegistros();
+    $cn->desconectar();
+    
+    return array(
+        'total' => $total,
+        'objetos' => $articulos
+    );
+}
 
 function nuevoSmarty() {
     $miSmarty = new Smarty();

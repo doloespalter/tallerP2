@@ -9,7 +9,7 @@
         {include file="header.tpl"}
         {include file="adminMenu.tpl"}
         
-        <div class="addForm">
+         <div class="addForm">
             <form method="POST" action="guardarArticulo.php"
                   enctype="multipart/form-data">
                 <p>
@@ -17,15 +17,24 @@
                      <select name="famId">
                          
                     {foreach from=$familias item=fam}
-                         <option value="{$fam.id}">{$fam.nombre}</option>
+                       
+                        {if $articulo.id_familia eq $fam.id}
+                            <option value="{$fam.id}" selected='selected'>
+                                {$fam.nombre}
+                            </option>
+                        {else}
+                            <option value="{$fam.id}">
+                                {$fam.nombre}
+                            </option>
+                         {/if}
                     {/foreach}
                     </select>
                 </p>
                 <p>
-                    Nombre <input type="text" name="nombre">
+                    Nombre <input type="text" name="nombre" value='{$articulo.nombre}'>
                 </p>
                 <p>
-                    Precio <input type="text" name="precio">
+                    Precio <input type="text" name="precio" value='{$articulo.precio}'>
                 </p>
                 <p>
                     Proveedores 
@@ -36,17 +45,23 @@
                     </select>
                 </p>
                 <p>Imagen
-                     <input type="file" name="imagen"  accept="image/*" />
+                     <input type="file" name="imagen" accept="image/*" />
                 </p>
                 <p>
-                    <input type="checkbox" name="destacado" value="1">
+                    {if $articulo.destacado eq "1"}
+                        <input type="checkbox" name="destacado" value="1" checked>
+                    {else}
+                        <input type="checkbox" name="destacado" value="1">
+                    {/if}
                     Destacado
                 </p>
                 <p>
                     <input type="submit" value="Guardar">
                 </p>
                 
+                <input type="hidden" name="id" value={$articulo.id}/>
+                <input type="hidden" name="editMode"/>
             </form>
-        </div>
+        </div>         
     </body>
 </html>

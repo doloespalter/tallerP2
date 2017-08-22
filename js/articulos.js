@@ -3,13 +3,13 @@ var id=0;
 
 $(document).ready(
     function () {
-        cargarFamilias();
+        cargarArticulos();
 
         $(".eliminar").click(               
             function () {
                 id = $(this).attr("data");
                 $.ajax({
-                    url: "borrarFamilia.php",
+                    url: "borrarArticulo.php",
                     dataType: "JSON",
                     type: "POST",
                     data: "id=" + id,
@@ -17,12 +17,36 @@ $(document).ready(
                     timeout: 4000,
                     error: error
                 });
-        });  
+        });
+        
+        /*
+        $(".editar").click(               
+            function () {
+                id = $(this).attr("data");
+                $.ajax({
+                    url: "editarArticulo.php",
+                    dataType: "JSON",
+                    type: "POST",
+                    data: "id=" + id,
+                    success: procesar2,
+                    timeout: 4000,
+                    error: error2
+                });
+        }); 
+        */
 });
 
 
 function error(){
-    alert("Lo sentimos, no se ha podido eliminar la familia");
+    alert("Lo sentimos, no se ha podido eliminar el articulo");
+}
+
+function procesar2(respuesta){
+
+}
+
+function error2(respuesta){
+
 }
 
 function procesar(respuesta){
@@ -36,15 +60,15 @@ function procesar(respuesta){
 }
 
 function actualizarTabla(){
-    var fila =  $('#row_familia'+id);
+    var fila =  $('#row_articulo'+id);
     fila.remove();
 };
 
 
-function cargarFamilias() {
+function cargarArticulos() {
    
     $.ajax({
-        url: 'familias.php',
+        url: 'articulos.php',
         dataType: 'html',
         data: {pag: pagina }
     }).done(function (html) {
@@ -52,25 +76,26 @@ function cargarFamilias() {
 
         $("#anterior").click(function () {
             pagina = pagina - 1;
-            cargarFamilias(pagina);
+            cargarArticulos(pagina);
         });
 
         $("#siguiente").click(function () {
             pagina = pagina + 1;
-            cargarFamilias(pagina);
+            cargarArticulos(pagina);
         });
         
         $("#primero").click(function () {
             pagina = 1;
-            cargarFamilias(pagina);
+            cargarArticulos(pagina);
         });
         
          $("#ultimo").click(function () {
             pagina = $("#total").val();
-            cargarFamilias(pagina);
+            cargarArticulos(pagina);
         });
 
     }).fail(function () {
         alert('no se pudo cargar el contenido');
     });
 }
+
