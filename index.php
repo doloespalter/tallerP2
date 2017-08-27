@@ -29,5 +29,6 @@ foreach($destacados['objetos'] as $destacado){
 
 $miSmarty = nuevoSmarty();
 $miSmarty->assign('destacados', $objetos); 
+$miSmarty->assign('familias', getFamilias()); 
 $miSmarty->display('index.tpl');
 

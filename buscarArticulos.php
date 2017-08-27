@@ -3,18 +3,16 @@ require_once 'funciones.php';
 
 //ini_set('display_errors', 1);
 
-$nombre = $_POST['buscador'];
-$tipo = $_POST['tipoBusqueda'];
+$nombre = $_GET['buscador'];
+$familia = $_GET['familia'];
 
 $objetos = array();
-if($tipo == "Nombre"){
-   $artiuclos = getArticulos();
+if($familia==0){
+   $articulos = buscarArticulosPorNombre($nombre);
    //$artiuclos = buscarArticulosPorNombre($nombre, $tipo);
 }else{
-   $articulos = buscarArticulosPorNombre($nombre, $tipo);
+   $articulos = buscarArticulosPorFamilia($nombre, $familia);
 }
-
-
 
 
 foreach($articulos['objetos'] as $articulo){ 

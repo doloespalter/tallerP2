@@ -28,26 +28,31 @@
             </div>
         </div>
             
-        <div id="divBuscado">
-             <form method="POST" action="./buscarArticulos.php"
-                  enctype="multipart/form-data">
-                
-                 <p> Buscador: <br>
-                     <input type="text" name="buscador">
-                </p>
-                <p> Tipo de busqueda
-                    <select name="tipoBusqueda">
-                    
-                         <option value="1">Nombre</option>
-                         <option value="1">Familia</option>
-                    
+            
+      
+            
+        <div id="divBarraBuscador">
+             <!-- <form method="POST" action="./buscarArticulos.php"
+                  enctype="multipart/form-data"> -->
+   
+                 
+                    <select name="familia" id="familiaSeleccionada">
+                        <option selected="selected" value="0"> Todas </option>
+                        {foreach from=$familias item=familia}    
+                             <option value="{$familia.id}">{$familia.nombre}</option>
+                         {/foreach}
                     </select>
-                </p>
                 
-                <p>
-                    <input type="submit" value="Buscar">
-                </p>
-            </form>
-        </div>    
+                    <input type="text" name="buscador" id="buscador">
+                    <img src="./imagenes/search.png" id="searchIcon"/>
+                   <input type="submit" value="Buscar" id="searchButton">
+                
+           <!-- </form> -->
+        </div>   
+                    
+        <div id="contenidoBusqueda">
+            
+        </div>      
+                    
     </body>
 </html>

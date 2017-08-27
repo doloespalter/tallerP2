@@ -165,7 +165,6 @@ function getArticuloById($id) {
 function obtenerProductosPorCant($catId, $pagina = 1, $cantidad) {
      
     $desde = ($pagina - 1) * $cantidad;
-    
     $cn = getConexion();
     $cn->consulta("
         SELECT count(*) as total 
@@ -291,7 +290,7 @@ function obtenerProductosDestacados() {
     );
 }
 
-function buscarArticulosPorNombre($nombre, $tipo){
+function buscarArticulosPorNombre($nombre){
     $cn = getConexion();
 
     $palabra = '%'.$nombre.'%';
@@ -322,6 +321,28 @@ function buscarArticulosPorNombre($nombre, $tipo){
     );
     
 }
+
+function buscarArticulosPorFamilia($nombre, $idFamilia){
+    $cn = getConexion();
+
+    $palabra = '%'.$nombre.'%';
+    $cn->consulta("SELECT * FROM articulos 
+             WHERE nombre LIKE :articulo
+             AND id_familia =:idFamilia",
+            array(
+                array('articulo', $palabra, 'string'),
+                array('idFamilia', $idFamilia, 'string')
+            ));
+    $articulos = $cn->restantesRegistros();
+    
+    $cn->desconectar();
+    
+    return array(       
+        'objetos' => $articulos,
+    );
+    
+}
+
 
 function nuevoSmarty() {
     $miSmarty = new Smarty();

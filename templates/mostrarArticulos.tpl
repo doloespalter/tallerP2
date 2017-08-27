@@ -1,11 +1,6 @@
 <h1>ARTICULOS</h1>
 <div>
-    <div>
     <div>  
-       {$palabra} 
-       
-    </div>   
-        
             <div class="divArticulos">
                 {foreach from=$articulos item=art}
                 <div>

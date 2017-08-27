@@ -8,7 +8,6 @@
     overflow: hidden;
 }
 
-
 body {
     background: #f1f1f1;
 }
@@ -104,6 +103,16 @@ body {
     font-size: 18px;
     float: left;
     padding-top: 1px;
+}
+
+
+#barraBuscar{
+    height: 20px;
+    width: 200px;
+}
+
+#searchIcon{
+    height: 15px;
 }
 /*
 .product-item .add2cart {
