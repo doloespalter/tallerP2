@@ -11,9 +11,8 @@ if(isset($usuario_logueado)){
     // Tomar la sesion
     session_start();
     // guardar el usuario en la sesion
-    $_SESSION['usuario'] = $usuario_logueado;
-    
-    header('location:./index.php');
+    $_SESSION['usuario'] = $usuario_logueado;   
+    header("Location: ./familias.php");  
 } else {
-   /* header('location:./login.php?err=1');*/
+    header('location:./login.php?err=1');
 }

@@ -306,13 +306,14 @@ function getUsuarioLogueado() {
     session_start();
     if (isset($_SESSION['usuario'])) {
         $usuario = $_SESSION['usuario'];
-    } else {
+    } 
+    /*
+    else {
         if (isset($_COOKIE['recordar'])) {
             $usuario = buscarUsuarioPorGuid($_COOKIE['recordar']);
             $_SESSION['usuario'] = $usuario;
         }
-    }
-
+    }*/
     return $usuario;
 }
 
@@ -336,9 +337,18 @@ function login($usuario, $clave, $recordar){
     $file = fopen("./data.csv","r");   
     while (($line = fgetcsv($file)) !== FALSE) {
         if($usuario==$line[0] && $clave==$line[1]){
-            //loggeo
-            header("Location: ./familias.php");            
+            
+            $usuario_logueado = array(
+                'id' => 1,
+                'nombre' => $usuario,
+                'guid' => '123456789ABCDEF123456'
+            );
+
+            if ($recordar) {
+                setcookie('recordar', $usuario_logueado['guid'], time() + (60 * 60 * 24), "/");
+            }           
         }
     }
    fclose($file);
+   return $usuario_logueado;
 }
