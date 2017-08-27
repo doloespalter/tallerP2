@@ -19,6 +19,16 @@ function guardarFamilia($nombre) {
     $cn->desconectar();
 }
 
+function ingresarLog($texto) {
+    $cn = getConexion();
+    $cn->consulta("INSERT INTO logs(texto) VALUES(:texto)",
+            array(
+                array('texto', $texto, 'string')
+            ));
+    $cn->desconectar();
+}
+
+
 function eliminarArticulo($id) {
     $cn = getConexion();
     $sql = "DELETE FROM articulos WHERE id=:id;";
@@ -96,7 +106,9 @@ function guardarArticulo($nombre, $famId, $destacado, $precio, $provId){
                 array('provId', $provId, 'int')        
                 
             ));
+    $id = $cn->ultimoIdInsert();
     $cn->desconectar();
+    return $id;   
 }
 
 function guardarProveedor($nombre) {
@@ -181,7 +193,7 @@ function obtenerProductosPorCant($catId, $pagina = 1, $cantidad) {
 }
 
 function obtenerFamiliasDeA10($pagina = 1) {
-    $cantidad=10;
+    $cantidad=3;
     $desde = ($pagina - 1) * $cantidad;
     
     $cn = getConexion();
@@ -189,7 +201,7 @@ function obtenerFamiliasDeA10($pagina = 1) {
         SELECT count(*) as total 
         FROM familias");
     
-    $total = $cn->siguienteRegistro()['total'] / $porPagina;
+    $total = $cn->siguienteRegistro()['total'] / $cantidad;
     
     $cn->consulta("
             SELECT * FROM familias 
@@ -260,6 +272,21 @@ function obtenerArticulosDeA10($pagina = 1) {
     
     return array(
         'total' => $total,
+        'objetos' => $articulos
+    );
+}
+
+function obtenerProductosDestacados() {
+    $cn = getConexion();
+    $cn->consulta("
+            SELECT * FROM articulos 
+            WHERE destacado = 1           
+            ",
+            array());
+    $articulos = $cn->restantesRegistros();
+    $cn->desconectar();
+    
+    return array(
         'objetos' => $articulos
     );
 }

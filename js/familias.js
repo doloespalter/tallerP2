@@ -46,7 +46,7 @@ function cargarFamilias() {
     $.ajax({
         url: 'familias.php',
         dataType: 'html',
-        data: {pag: pagina }
+        data: {pag: pagina, prueba:'hola' }
     }).done(function (html) {
         $('#divContenido').html(html);
 

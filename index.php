@@ -1,8 +1,10 @@
 <?php
-ini_set('display_errors', 1); 
+
+//ini_set('display_errors', 1);
+
 require_once 'funciones.php'; 
 
- 
+$destacados = obtenerProductosDestacados(); 
  
  /*
 $catId = $_GET['cat'];
@@ -12,8 +14,20 @@ if (!isset($catId)) {
 }
   */
 
+foreach($destacados['objetos'] as $destacado){
+    
+    $id = $destacado['id'];
+    if(file_exists("./imagenes/$id")) {
+        $destacado['imagen'] = "./imagenes/".$id;
+    } else {
+        $destacado['imagen'] = "./imagenes/defecto.png";
+    }
+    
+    $objetos[] = $destacado;
+}
+
 
 $miSmarty = nuevoSmarty();
-/* $miSmarty->assign('categorias', getCategorias()); */
+$miSmarty->assign('destacados', $objetos); 
 $miSmarty->display('index.tpl');
 
