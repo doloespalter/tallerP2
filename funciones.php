@@ -291,6 +291,38 @@ function obtenerProductosDestacados() {
     );
 }
 
+function buscarArticulosPorNombre($nombre, $tipo){
+    $cn = getConexion();
+
+    $palabra = '%'.$nombre.'%';
+    $cn->consulta("SELECT * FROM articulos 
+             WHERE nombre LIKE :articulo",
+            array(
+               array('articulo', $palabra, 'string')
+            ));
+    $articulos = $cn->restantesRegistros();
+    
+    $cn->consulta("
+        SELECT count(*) as total 
+        FROM articulos 
+        WHERE nombre LIKE :articulo",
+        array(
+               array('articulo', $palabra, 'string')
+            ));
+    
+    $total = $cn->siguienteRegistro()['total'];
+    $cn->desconectar();
+    
+     
+    
+    return array(
+        'palabra' => $nombre,
+        'objetos' => $articulos,
+        'total' => $total
+    );
+    
+}
+
 function nuevoSmarty() {
     $miSmarty = new Smarty();
     $miSmarty->template_dir = "templates";
@@ -329,6 +361,8 @@ function buscarUsuarioPorGuid($guid) {
     }
     return $usuario;
 }
+
+
 
 
 function login($usuario, $clave, $recordar){

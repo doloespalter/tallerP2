@@ -132,3 +132,7 @@ td.text-center {
 td.text-right {
   text-align: right;
 }
+
+.img-producto{
+   width: 100px;
+}

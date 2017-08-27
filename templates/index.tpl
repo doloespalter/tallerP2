@@ -27,5 +27,27 @@
                 {/foreach}
             </div>
         </div>
+            
+        <div id="divBuscado">
+             <form method="POST" action="./buscarArticulos.php"
+                  enctype="multipart/form-data">
+                
+                 <p> Buscador: <br>
+                     <input type="text" name="buscador">
+                </p>
+                <p> Tipo de busqueda
+                    <select name="tipoBusqueda">
+                    
+                         <option value="1">Nombre</option>
+                         <option value="1">Familia</option>
+                    
+                    </select>
+                </p>
+                
+                <p>
+                    <input type="submit" value="Buscar">
+                </p>
+            </form>
+        </div>    
     </body>
 </html>
