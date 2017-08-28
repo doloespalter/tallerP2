@@ -44,11 +44,11 @@ function actualizarTabla(){
 function cargarProveedores() {
    
     $.ajax({
-        url: 'proveedores.php',
+        url: 'cargarProveedores.php',
         dataType: 'html',
         data: {pag: pagina }
     }).done(function (html) {
-        $('#divContenido').html(html);
+        $('#divTablaProveedores').html(html);
 
         $("#anterior").click(function () {
             pagina = pagina - 1;

@@ -7,7 +7,7 @@
     <body>
         <div id="divEncabezado"> 
             <div class="topnav" id="myTopnav">
-                <a id="logo_nav">
+                <a href="./index.php" id="logo_nav">
                     <img height="50px" src="./imagenes/avocado.png"/>
                 </a>
 

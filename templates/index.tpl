@@ -50,8 +50,7 @@
            <!-- </form> -->
         </div>   
                     
-        <div id="contenidoBusqueda">
-            
+        <div id="contenidoBusqueda">         
         </div>      
                     
     </body>

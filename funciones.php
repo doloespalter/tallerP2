@@ -192,7 +192,7 @@ function obtenerProductosPorCant($catId, $pagina = 1, $cantidad) {
 }
 
 function obtenerFamiliasDeA10($pagina = 1) {
-    $cantidad=3;
+    $cantidad=10;
     $desde = ($pagina - 1) * $cantidad;
     
     $cn = getConexion();

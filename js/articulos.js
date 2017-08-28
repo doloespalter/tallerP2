@@ -68,11 +68,11 @@ function actualizarTabla(){
 function cargarArticulos() {
    
     $.ajax({
-        url: 'articulos.php',
+        url: 'cargarArticulos.php',
         dataType: 'html',
         data: {pag: pagina }
     }).done(function (html) {
-        $('#divContenido').html(html);
+        $('#divTablaArticulos').html(html);
 
         $("#anterior").click(function () {
             pagina = pagina - 1;

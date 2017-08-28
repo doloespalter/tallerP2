@@ -44,11 +44,11 @@ function actualizarTabla(){
 function cargarFamilias() {
    
     $.ajax({
-        url: 'familias.php',
+        url: 'cargarFamilias.php',
         dataType: 'html',
-        data: {pag: pagina, prueba:'hola' }
+        data: {pag: pagina}
     }).done(function (html) {
-        $('#divContenido').html(html);
+        $('#divTablaFamilias').html(html);
 
         $("#anterior").click(function () {
             pagina = pagina - 1;
