@@ -5,19 +5,7 @@ $(document).ready(
     function () {
         cargarFamilias();
 
-        $(".eliminar").click(               
-            function () {
-                id = $(this).attr("data");
-                $.ajax({
-                    url: "borrarFamilia.php",
-                    dataType: "JSON",
-                    type: "POST",
-                    data: "id=" + id,
-                    success: procesar,
-                    timeout: 4000,
-                    error: error
-                });
-        });  
+        
 });
 
 
@@ -26,19 +14,14 @@ function error(){
 }
 
 function procesar(respuesta){
-    if(respuesta["result"]=="OK"){
+    if(respuesta["result"]==="OK"){
         alert("se elimino correctamente");
-        actualizarTabla();
+        cargarFamilias();
     }
     else{
-        alert("ERROR " + respuesta["result"]);
+        alert("ERROR! " + respuesta["result"]);
     }
 }
-
-function actualizarTabla(){
-    var fila =  $('#row_familia'+id);
-    fila.remove();
-};
 
 
 function cargarFamilias() {
@@ -69,6 +52,24 @@ function cargarFamilias() {
             pagina = $("#total").val();
             cargarFamilias(pagina);
         });
+        
+        
+        $(".eliminar").click(               
+            function () {
+                id = $(this).attr("data");
+                $.ajax({
+                    url: "borrarFamilia.php",
+                    dataType: "JSON",
+                    type: "POST",
+                    data: "id=" + id,
+                    success: procesar,
+                    timeout: 4000,
+                    error: error
+                });
+        }); 
+        
+        
+        
 
     }).fail(function () {
         alert('no se pudo cargar el contenido');

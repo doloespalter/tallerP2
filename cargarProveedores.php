@@ -14,10 +14,13 @@ foreach($proveedores['objetos'] as $proveedor){
     $objetos[] = $proveedor;
 }
 
+ingresarLog("pagina ".$pagina);
+ingresarLog("total ".$proveedores['total']);
+
 $miSmarty = nuevoSmarty();
 $miSmarty->assign('proveedores', $objetos);
 $miSmarty->assign('mostrarAnterior', $pagina > 1);
-$miSmarty->assign('mostrarSiguiente', $pagina < $productos['total']);
+$miSmarty->assign('mostrarSiguiente', $pagina < $proveedores['total']);
 $miSmarty->assign('total', $proveedores['total']);
 $miSmarty->display("tablaProveedores.tpl");
              

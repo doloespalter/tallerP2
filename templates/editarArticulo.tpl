@@ -40,7 +40,15 @@
                     Proveedores 
                      <select name="provId">
                     {foreach from=$proveedores item=prov}
-                         <option value="{$prov.id}">{$prov.nombre}</option>
+                         {if $articulo.id_proveedor eq $prov.id}
+                            <option value="{$prov.id}" selected='selected'>
+                                {$prov.nombre}
+                            </option>
+                        {else}
+                            <option value="{$prov.id}">
+                                {$prov.nombre}
+                            </option>
+                         {/if}
                     {/foreach}
                     </select>
                 </p>

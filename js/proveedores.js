@@ -3,23 +3,8 @@ var id=0;
 
 $(document).ready(
     function () {
-        cargarProveedores();
-
-        $(".eliminar").click(               
-            function () {
-                id = $(this).attr("data");
-                $.ajax({
-                    url: "borrarProveedor.php",
-                    dataType: "JSON",
-                    type: "POST",
-                    data: "id=" + id,
-                    success: procesar,
-                    timeout: 4000,
-                    error: error
-                });
-        });  
+        cargarProveedores(); 
 });
-
 
 function error(){
     alert("Lo sentimos, no se ha podido eliminar el proveedor");
@@ -28,17 +13,13 @@ function error(){
 function procesar(respuesta){
     if(respuesta["result"]=="OK"){
         alert("se elimino correctamente");
-        actualizarTabla();
+        cargarProveedores();
     }
     else{
         alert("ERROR " + respuesta["result"]);
     }
 }
 
-function actualizarTabla(){
-    var fila =  $('#row_proveedor'+id);
-    fila.remove();
-};
 
 
 function cargarProveedores() {
@@ -69,6 +50,20 @@ function cargarProveedores() {
             pagina = $("#total").val();
             cargarProveedores(pagina);
         });
+        
+        $(".eliminar").click(               
+            function () {
+                id = $(this).attr("data");
+                $.ajax({
+                    url: "borrarProveedor.php",
+                    dataType: "JSON",
+                    type: "POST",
+                    data: "id=" + id,
+                    success: procesar,
+                    timeout: 4000,
+                    error: error
+                });
+        });  
 
     }).fail(function () {
         alert('no se pudo cargar el contenido');

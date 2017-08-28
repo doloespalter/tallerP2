@@ -46,6 +46,13 @@
                     <input type="text" name="buscador" id="buscador">
                     <img src="./imagenes/search.png" id="searchIcon"/>
                    <input type="submit" value="Buscar" id="searchButton">
+                   <p>Ordenar por:</p>
+                    <select name="orden" id="criterioDeOrden">                        
+                        <option value="1">Precio (menor a mayor)</option>
+                        <option value="2">Precio (mayor a menor)</option>
+                        <option value="3">Nombre (ascendete)</option>
+                        <option value="4">Nombre (descendente)</option>
+                    </select>
                 
            <!-- </form> -->
         </div>   

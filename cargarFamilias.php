@@ -1,7 +1,6 @@
 <?php
 require_once 'funciones.php';
 
-
 $pagina = $_GET['pag'];
 
 if (!isset($pagina)) {

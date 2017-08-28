@@ -45,6 +45,24 @@ function eliminarArticulo($id) {
     $cn->desconectar();
 }
 
+function puedoEliminarFamilia($idFamilia){
+    $cn = getConexion();
+        
+    $cn->consulta("
+        SELECT count(*) as total 
+        FROM articulos 
+        WHERE id_familia =:idFamilia", 
+            array(
+                array('idFamilia', $idFamilia, 'string')
+            ));
+  
+    $total = $cn->siguienteRegistro()['total'];   
+    
+    $cn->desconectar();
+
+    return $total == 0;
+}
+
 function eliminarFamilia($id) {
     $cn = getConexion();
     $sql = "DELETE FROM familias WHERE id=:id;";
@@ -59,6 +77,24 @@ function eliminarFamilia($id) {
         echo json_encode(array("result"=>$cn->ultimoError())); 
     }
     $cn->desconectar();
+}
+
+function puedoEliminarProveedor($idProveedor){
+    $cn = getConexion();
+        
+    $cn->consulta("
+        SELECT count(*) as total 
+        FROM articulos 
+        WHERE id_proveedor =:idProveedor", 
+            array(
+                array('idProveedor', $idProveedor, 'string')
+            ));
+  
+    $total = $cn->siguienteRegistro()['total'];   
+    
+    $cn->desconectar();
+
+    return $total == 0;
 }
 
 function eliminarProveedor($id) {
@@ -170,7 +206,7 @@ function obtenerProductosPorCant($catId, $pagina = 1, $cantidad) {
         SELECT count(*) as total 
         FROM productos");
     
-    $total = $cn->siguienteRegistro()['total'] / $porPagina;
+    $total = $cn->siguienteRegistro()['total'] / $cantidad;
     
     $cn->consulta("
             SELECT * FROM productos 
@@ -228,7 +264,7 @@ function obtenerProveedoresDeA10($pagina = 1) {
         SELECT count(*) as total 
         FROM proveedores");
     
-    $total = $cn->siguienteRegistro()['total'] / $porPagina;
+    $total = $cn->siguienteRegistro()['total'] / $cantidad;
     
     $cn->consulta("
             SELECT * FROM proveedores 
@@ -256,7 +292,7 @@ function obtenerArticulosDeA10($pagina = 1) {
         SELECT count(*) as total 
         FROM articulos");
     
-    $total = $cn->siguienteRegistro()['total'] / $porPagina;
+    $total = $cn->siguienteRegistro()['total'] / $cantidad;
     
     $cn->consulta("
             SELECT * FROM articulos 
@@ -290,37 +326,63 @@ function obtenerProductosDestacados() {
     );
 }
 
-function buscarArticulosPorNombre($nombre){
-    $cn = getConexion();
 
+function obtenerOrden($criterio){
+    $retorno;
+    if($criterio==1){
+        $retorno = " ORDER BY precio ASC  ";
+    } else if($criterio==2){
+        $retorno = " ORDER BY precio DESC  ";
+    } else if($criterio==3){
+        $retorno = " ORDER BY nombre ASC  ";
+    } else if($criterio==4){
+        $retorno = " ORDER BY nombre DESC  ";
+    } else{
+         $retorno = "";
+    }
+        return $retorno;
+}
+
+
+function buscarArticulosPorNombre($nombre, $pagina = 1, $criterio){
+    $cantidad=10;
+    $desde = ($pagina - 1) * $cantidad;
     $palabra = '%'.$nombre.'%';
-    $cn->consulta("SELECT * FROM articulos 
-             WHERE nombre LIKE :articulo",
-            array(
-               array('articulo', $palabra, 'string')
-            ));
-    $articulos = $cn->restantesRegistros();
+    
+    $cn = getConexion();
     
     $cn->consulta("
         SELECT count(*) as total 
         FROM articulos 
-        WHERE nombre LIKE :articulo",
+        WHERE nombre LIKE :articulo
+        ",
         array(
                array('articulo', $palabra, 'string')
             ));
     
-    $total = $cn->siguienteRegistro()['total'];
+    $total = $cn->siguienteRegistro()['total']/$cantidad;
+    
+    $orden = obtenerOrden($criterio);
+    
+    $cn->consulta("SELECT * FROM articulos 
+            WHERE nombre LIKE :articulo ".$orden."      
+            LIMIT :desde, :cantidad 
+            ",
+            array(
+               array('articulo', $palabra, 'string'),
+               array('desde', $desde, 'int'),
+               array('cantidad', $cantidad, 'int'),
+            ));
+    
+    $articulos = $cn->restantesRegistros();
     $cn->desconectar();
     
-     
-    
     return array(
-        'palabra' => $nombre,
         'objetos' => $articulos,
         'total' => $total
-    );
-    
+    ); 
 }
+
 
 function buscarArticulosPorFamilia($nombre, $idFamilia){
     $cn = getConexion();
